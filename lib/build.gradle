@@ -1,0 +1,115 @@
+apply plugin: 'com.android.library'
+
+project.ext {
+    VERSION_NAME = '0.1.0'
+}
+
+android {
+
+    compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
+    buildToolsVersion rootProject.ext.BUILD_TOOLS_VERSION
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.JAVA_VERSION
+        targetCompatibility rootProject.ext.JAVA_VERSION
+    }
+
+    defaultConfig {
+
+        minSdkVersion rootProject.ext.MIN_SDK_VERSION
+        targetSdkVersion rootProject.ext.TARGET_SDK_VERSION
+
+        versionName project.ext.VERSION_NAME
+    }
+
+    publishNonDefault true
+
+    buildTypes {
+
+        release {
+            debuggable false
+
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            consumerProguardFiles 'proguard-consumer-rules.pro'
+        }
+
+        debug {
+            debuggable true
+
+            minifyEnabled false
+            shrinkResources false
+        }
+    }
+
+    packagingOptions {
+        merge 'META-INF/LICENCE.md'
+        merge 'META-INF/LICENCE.txt'
+        merge 'META-INF/LICENCE'
+        merge 'META-INF/LICENSE.md'
+        merge 'META-INF/LICENSE.txt'
+        merge 'META-INF/LICENSE'
+        merge 'META-INF/LICENCE-3RD-PARTY.md'
+        merge 'META-INF/LICENCE-3RD-PARTY.txt'
+        merge 'META-INF/LICENCE-3RD-PARTY'
+        merge 'META-INF/LICENSE-3RD-PARTY.md'
+        merge 'META-INF/LICENSE-3RD-PARTY.txt'
+        merge 'META-INF/LICENSE-3RD-PARTY'
+        merge 'META-INF/NOTICE.md'
+        merge 'META-INF/NOTICE.txt'
+        merge 'META-INF/NOTICE'
+        merge 'META-INF/ASL2.0'
+        merge '/LICENCE.txt'
+        merge '/LICENCE'
+        merge '/LICENCE.md'
+        merge '/LICENSE.txt'
+        merge '/LICENSE'
+        merge '/LICENSE.md'
+        merge '/LICENCE-3RD-PARTY'
+        merge '/LICENCE-3RD-PARTY.txt'
+        merge '/LICENCE-3RD-PARTY.md'
+        merge '/LICENSE-3RD-PARTY'
+        merge '/LICENSE-3RD-PARTY.txt'
+        merge '/LICENSE-3RD-PARTY.md'
+        merge '/NOTICE'
+        merge '/NOTICE.txt'
+        merge '/NOTICE.md'
+    }
+
+    libraryVariants.all {
+        variant -> task("generate${variant.name.capitalize()}Javadoc", type: Javadoc) {
+            description "Generates Javadoc for $variant.name."
+            source = variant.sourceSets.java.srcDirs
+            // Include the Android JAR for the targeted API version in the
+            // classpath to avoid missing symbol errors (at least for the basic
+            // Android framework).
+            ext.androidJarPath = "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar"
+            classpath = files(source) + files(ext.androidJarPath)
+            title = "TrueBlue API"
+            ext.variantName = variant.name
+            ext.javadocDestinationDir = destinationDir
+            failOnError false
+            exclude '**/internal/**'
+        }.doLast {
+            javadoc -> task("zip${javadoc.ext.variantName.capitalize()}Javadoc", type: Zip) {
+                from javadoc.ext.javadocDestinationDir
+                exclude '*.zip'
+                archiveName "trueblue-javadoc-${variantName}.zip"
+                destinationDir(javadoc.ext.javadocDestinationDir)
+            }.execute()
+        }
+    }
+}
+
+dependencies {
+
+    compile fileTree(dir: 'libs', include: '*.jar')
+    compile 'com.android.support:support-annotations:' + rootProject.ext.ANDROID_SUPPORT_LIBRARY_VERSION
+    compile 'com.android.support:support-compat:' + rootProject.ext.ANDROID_SUPPORT_LIBRARY_VERSION
+
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.8.47'
+    testCompile 'org.robolectric:robolectric:3.3.2'
+    testCompile 'com.android.support.test:rules:0.5'
+}

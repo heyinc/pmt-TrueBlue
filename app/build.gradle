@@ -1,0 +1,103 @@
+apply plugin: 'com.android.application'
+
+android {
+
+    compileSdkVersion rootProject.ext.COMPILE_SDK_VERSION
+    buildToolsVersion rootProject.ext.BUILD_TOOLS_VERSION
+
+    compileOptions {
+        sourceCompatibility rootProject.ext.JAVA_VERSION
+        targetCompatibility rootProject.ext.JAVA_VERSION
+    }
+
+    defaultConfig {
+        applicationId "com.coiney.android.hellobluetooth"
+
+        minSdkVersion 11
+        targetSdkVersion rootProject.ext.TARGET_SDK_VERSION
+
+        versionName '1.0.0'
+        versionCode rootProject.ext.VERSION_CODE
+    }
+
+    signingConfigs {
+
+        debug {}
+
+        production {}
+    }
+
+    buildTypes {
+
+        release {
+            debuggable false
+
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.production
+        }
+
+        debug {
+            debuggable true
+
+            minifyEnabled false
+            shrinkResources false
+
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    packagingOptions {
+        merge 'META-INF/LICENCE.md'
+        merge 'META-INF/LICENCE.txt'
+        merge 'META-INF/LICENCE'
+        merge 'META-INF/LICENSE.md'
+        merge 'META-INF/LICENSE.txt'
+        merge 'META-INF/LICENSE'
+        merge 'META-INF/LICENCE-3RD-PARTY.md'
+        merge 'META-INF/LICENCE-3RD-PARTY.txt'
+        merge 'META-INF/LICENCE-3RD-PARTY'
+        merge 'META-INF/LICENSE-3RD-PARTY.md'
+        merge 'META-INF/LICENSE-3RD-PARTY.txt'
+        merge 'META-INF/LICENSE-3RD-PARTY'
+        merge 'META-INF/NOTICE.md'
+        merge 'META-INF/NOTICE.txt'
+        merge 'META-INF/NOTICE'
+        merge 'META-INF/ASL2.0'
+        merge '/LICENCE.txt'
+        merge '/LICENCE'
+        merge '/LICENCE.md'
+        merge '/LICENSE.txt'
+        merge '/LICENSE'
+        merge '/LICENSE.md'
+        merge '/LICENCE-3RD-PARTY'
+        merge '/LICENCE-3RD-PARTY.txt'
+        merge '/LICENCE-3RD-PARTY.md'
+        merge '/LICENSE-3RD-PARTY'
+        merge '/LICENSE-3RD-PARTY.txt'
+        merge '/LICENSE-3RD-PARTY.md'
+        merge '/NOTICE'
+        merge '/NOTICE.txt'
+        merge '/NOTICE.md'
+    }
+
+    android {
+        lintOptions {
+            abortOnError false
+        }
+    }
+}
+
+dependencies {
+
+    annotationProcessor 'com.jakewharton:butterknife-compiler:8.7.0'
+
+    compile 'com.android.support:appcompat-v7:' + rootProject.ext.ANDROID_SUPPORT_LIBRARY_VERSION
+    compile 'com.android.support:design:' + rootProject.ext.ANDROID_SUPPORT_LIBRARY_VERSION
+    compile 'com.jakewharton:butterknife:8.7.0'
+
+    debugCompile project(path: ':lib', configuration: 'debug')
+    releaseCompile project(path: ':lib', configuration: 'release')
+}

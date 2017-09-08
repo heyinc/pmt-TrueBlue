@@ -1,0 +1,16 @@
+.DS_Store
+*.keystore
+.idea
+*.iml
+bin
+gen
+target
+gen-external-apklibs
+out
+proguard_logs
+build
+.gradle
+obj
+*.apk
+local.properties
+captures

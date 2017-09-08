@@ -1,0 +1,14 @@
+<manifest
+    package="com.coiney.android.trueblue"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- Required to connect to paired devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+
+    <!-- Required to run discovery scans and pair with devices. -->
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+
+    <!-- Required to receive discovery scan results. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
+</manifest>
